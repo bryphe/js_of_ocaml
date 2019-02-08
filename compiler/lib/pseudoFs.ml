@@ -94,19 +94,10 @@ let read name filename =
   let content = Fs.read_file filename in
   (Pc (IString name),Pc (IString content))
 
-let program_of_files l =
-  let fs = List.map l ~f:(fun (name,filename) ->
-      read name filename) in
-  let body =
-    List.map fs ~f:(fun (n, c) ->
-        Let(Var.fresh (), Prim(Extern "caml_create_file_extern", [n;c]))) in
-  let pc = 0 in
-  let blocks = Addr.Map.add pc {params=[];
-                               handler=None;
-                               body=[];
-                               branch=Stop} Addr.Map.empty in
-  let p = pc, blocks, pc+1 in
-  Code.prepend p body
+let instr_of_files l =
+  let fs = List.map l ~f:(fun (name,filename) -> read name filename) in
+  List.map fs ~f:(fun (n, c) ->
+    Let(Var.fresh (), Prim(Extern "caml_create_file_extern", [n;c])))
 
 let make_body prim cmis files paths =
   let fs, missing = StringSet.fold (fun s (acc,missing) ->
@@ -135,16 +126,10 @@ let make_body prim cmis files paths =
   let body = List.map fs ~f:(fun (n, c) -> Let(Var.fresh (), Prim(Extern prim, [n;c]))) in
   body
 
-let f p cmis files paths =
-  let body = make_body "caml_create_file" cmis files paths in
-  Code.prepend p body
+let f kind cmis files paths =
+  let prim = match kind with
+    | `Inside -> "caml_create_file"
+    | `Outside -> "caml_create_file_extern"
+  in
+  make_body prim cmis files paths
 
-let f_empty cmis files paths =
-  let body = make_body "caml_create_file_extern" cmis files paths in
-  let pc = 0 in
-  let blocks = Addr.Map.add pc {params=[];
-                          handler=None;
-                          body=[];
-                               branch=Stop} Addr.Map.empty in
-  let p = pc, blocks, pc+1 in
-  Code.prepend p body

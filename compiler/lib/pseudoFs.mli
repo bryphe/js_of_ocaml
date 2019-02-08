@@ -19,6 +19,5 @@
 
 open Stdlib
 
-val f : Code.program -> StringSet.t -> string list -> string list -> Code.program
-val f_empty : StringSet.t -> string list -> string list -> Code.program
-val program_of_files : (string * string) list -> Code.program
+val f : [`Inside|`Outside] -> StringSet.t -> string list -> string list -> Code.instr list
+val instr_of_files : (string * string) list -> Code.instr list

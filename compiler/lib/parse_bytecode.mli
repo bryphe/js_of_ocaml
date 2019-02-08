@@ -27,11 +27,20 @@ module Debug : sig
   val paths    : data -> units:StringSet.t -> StringSet.t
 end
 
+type one =
+  { code : Code.program
+  ; cmis : StringSet.t
+  ; debug : Debug.data
+  }
+
+type result =
+  | Standalone of one
+  | Partial of one
+
 val from_channel :
   ?includes: string list ->
   ?toplevel:bool -> ?expunge:(string -> [`Keep | `Skip]) ->
-  ?dynlink:bool -> ?debug:[`Full | `Names | `No] -> in_channel ->
-  Code.program * StringSet.t * Debug.data * bool
+  ?dynlink:bool -> ?debug:[`Full | `Names | `No] -> in_channel -> result
 
 val from_string : string array -> string -> Code.program * Debug.data
 
