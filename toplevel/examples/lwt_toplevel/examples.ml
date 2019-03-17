@@ -94,7 +94,7 @@ open Graphics_js
 
 let () =
   loop [Mouse_motion; Key_pressed] (function {mouse_x = x; mouse_y = y; key} ->
-      moveto x y; draw_char key )
+      moveto x y; draw_char key)
 
 (** Graphics: PingPong *)
 open Js_of_ocaml_lwt

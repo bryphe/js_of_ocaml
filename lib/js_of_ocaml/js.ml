@@ -727,12 +727,12 @@ let parseFloat (s : js_string t) : float =
 let _ =
   Printexc.register_printer (function
       | Error e -> Some (to_string e##toString)
-      | _ -> None )
+      | _ -> None)
 
 let _ =
   Printexc.register_printer (fun e ->
       let e : < .. > t = Obj.magic e in
-      if instanceof e array_constructor then None else Some (to_string e##toString) )
+      if instanceof e array_constructor then None else Some (to_string e##toString))
 
 let string_of_error e = to_string e##toString
 

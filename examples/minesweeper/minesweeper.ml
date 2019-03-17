@@ -143,7 +143,7 @@ type demin_cf =
 let draw_cell dom bd =
   dom##.src :=
     js
-      ( if bd.flag
+      (if bd.flag
       then "sprites/flag.png"
       else if bd.mined
       then "sprites/bomb.png"
@@ -152,7 +152,7 @@ let draw_cell dom bd =
         if bd.nbm = 0
         then "sprites/empty.png"
         else "sprites/" ^ string_of_int bd.nbm ^ ".png"
-      else "sprites/normal.png" )
+      else "sprites/normal.png")
 
 let draw_board d =
   for y = 0 to d.cf.nbrows - 1 do
@@ -167,7 +167,7 @@ let disable_events d =
       (d.dom.(y).(x))##.onclick
       := Html.handler (fun _ ->
              Html.window##alert (js "GAME OVER");
-             Js._false )
+             Js._false)
     done
   done
 
@@ -175,10 +175,10 @@ let mark_cell d i j =
   if d.bd.(i).(j).flag
   then (
     d.nb_marked_cells <- d.nb_marked_cells - 1;
-    (d.bd.(i).(j)).flag <- false )
+    (d.bd.(i).(j)).flag <- false)
   else (
     d.nb_marked_cells <- d.nb_marked_cells + 1;
-    (d.bd.(i).(j)).flag <- true );
+    (d.bd.(i).(j)).flag <- true);
   draw_cell d.dom.(j).(i) d.bd.(i).(j)
 
 let reveal d i j =
@@ -192,7 +192,7 @@ let reveal d i j =
   then (
     draw_board d;
     disable_events d;
-    Html.window##alert (js "YOU WIN") )
+    Html.window##alert (js "YOU WIN"))
 
 let create_demin nb_c nb_r nb_m =
   let nbc = max default_config.nbcols nb_c and nbr = max default_config.nbrows nb_r in
@@ -219,14 +219,14 @@ let init_table d board_div =
   img##.src := js "sprites/bomb.png";
   img##.onclick :=
     Html.handler (fun _ ->
-        ( match !mode with
+        (match !mode with
         | Normal ->
             mode := Flag;
             img##.src := js "sprites/flag.png"
         | Flag ->
             mode := Normal;
-            img##.src := js "sprites/bomb.png" );
-        Js._false );
+            img##.src := js "sprites/bomb.png");
+        Js._false);
   Dom.appendChild buf (Html.createBr document);
   for y = 0 to d.cf.nbrows - 1 do
     let imgs = ref [] in
@@ -236,7 +236,7 @@ let init_table d board_div =
       img##.src := js "sprites/normal.png";
       img##.onclick :=
         Html.handler (fun _ ->
-            ( match !mode with
+            (match !mode with
             | Normal ->
                 if d.bd.(x).(y).seen
                 then ()
@@ -248,12 +248,12 @@ let init_table d board_div =
                 then (
                   draw_board d;
                   disable_events d;
-                  Html.window##alert (js "YOU LOSE") )
+                  Html.window##alert (js "YOU LOSE"))
                 else reveal d x y
             | Flag ->
                 (d.bd.(x).(y)).flag <- not d.bd.(x).(y).flag;
-                draw_cell img d.bd.(x).(y) );
-            Js._false );
+                draw_cell img d.bd.(x).(y));
+            Js._false);
       Dom.appendChild buf img
     done;
     Dom.appendChild buf (Html.createBr document);

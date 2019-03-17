@@ -150,9 +150,9 @@ let perform_raw
     | Some (`Form_contents form) -> (
       match form with
       | `Fields _strings ->
-          ( override_method "POST"
-          , override_content_type "application/x-www-form-urlencoded" )
-      | `FormData _ -> override_method "POST", content_type )
+          (override_method "POST"
+          , override_content_type "application/x-www-form-urlencoded")
+      | `FormData _ -> override_method "POST", content_type)
     | Some (`String _ | `Blob _) -> override_method "POST", content_type
   in
   let url =
@@ -163,23 +163,23 @@ let perform_raw
   let (res : resptype generic_http_frame Lwt.t), w = Lwt.task () in
   let req = create () in
   req##_open (Js.string method_) (Js.string url) Js._true;
-  ( match override_mime_type with
+  (match override_mime_type with
   | None -> ()
-  | Some mime_type -> req##overrideMimeType (Js.string mime_type) );
-  ( match response_type with
+  | Some mime_type -> req##overrideMimeType (Js.string mime_type));
+  (match response_type with
   | ArrayBuffer -> req##.responseType := Js.string "arraybuffer"
   | Blob -> req##.responseType := Js.string "blob"
   | Document -> req##.responseType := Js.string "document"
   | JSON -> req##.responseType := Js.string "json"
   | Text -> req##.responseType := Js.string "text"
-  | Default -> req##.responseType := Js.string "" );
-  ( match with_credentials with
+  | Default -> req##.responseType := Js.string "");
+  (match with_credentials with
   | Some c -> req##.withCredentials := Js.bool c
-  | None -> () );
-  ( match content_type with
+  | None -> ());
+  (match content_type with
   | Some content_type ->
       req##setRequestHeader (Js.string "Content-type") (Js.string content_type)
-  | _ -> () );
+  | _ -> ());
   List.iter (fun (n, v) -> req##setRequestHeader (Js.string n) (Js.string v)) headers;
   let headers s =
     Opt.case
@@ -197,7 +197,7 @@ let perform_raw
         else (
           Lwt.wakeup_exn w (Wrong_headers (req##.status, headers));
           st := `Failed;
-          req##abort );
+          req##abort);
       !st <> `Failed
   in
   req##.onreadystatechange :=
@@ -222,28 +222,28 @@ let perform_raw
                 | Default -> default_response url req##.status headers req
               in
               Lwt.wakeup w response
-        | _ -> () );
-  ( match progress with
+        | _ -> ());
+  (match progress with
   | Some progress ->
       req##.onprogress :=
         Dom.handler (fun e ->
             progress e##.loaded e##.total;
-            Js._true )
-  | None -> () );
+            Js._true)
+  | None -> ());
   Optdef.iter req##.upload (fun upload ->
       match upload_progress with
       | Some upload_progress ->
           upload##.onprogress :=
             Dom.handler (fun e ->
                 upload_progress e##.loaded e##.total;
-                Js._true )
-      | None -> () );
-  ( match contents with
+                Js._true)
+      | None -> ());
+  (match contents with
   | None -> req##send Js.null
   | Some (`Form_contents (`Fields l)) -> req##send (Js.some (string (encode_url !l)))
   | Some (`Form_contents (`FormData f)) -> req##send_formData f
   | Some (`String s) -> req##send (Js.some (Js.string s))
-  | Some (`Blob b) -> req##send_blob b );
+  | Some (`Blob b) -> req##send_blob b);
   Lwt.on_cancel res (fun () -> req##abort);
   res
 

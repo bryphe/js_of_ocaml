@@ -224,8 +224,8 @@ test 11 eq_big_int (numerator_ratio r, big_int_of_string "1040259735682744320")
 
 ;;
 let r1, r2 =
-  ( create_ratio (big_int_of_string "12724951") (big_int_of_string "26542080")
-  , create_ratio (big_int_of_string "-1") (big_int_of_string "81749606400") )
+  (create_ratio (big_int_of_string "12724951") (big_int_of_string "26542080")
+  , create_ratio (big_int_of_string "-1") (big_int_of_string "81749606400"))
 in
 let bi1 = mult_big_int (numerator_ratio r1) (denominator_ratio r2)
 and bi2 = mult_big_int (numerator_ratio r2) (denominator_ratio r1) in

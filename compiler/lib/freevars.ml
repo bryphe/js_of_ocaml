@@ -101,7 +101,7 @@ let find_loops ((_, blocks, _) as prog) =
         with Not_found ->
           traverse pc';
           let st' = Addr.Map.find pc' !state in
-          st.lowlink <- min st.lowlink st'.lowlink )
+          st.lowlink <- min st.lowlink st'.lowlink)
       ();
     if st.index = st.lowlink
     then (
@@ -115,7 +115,7 @@ let find_loops ((_, blocks, _) as prog) =
         ()
       done;
       if List.length !l > 1
-      then List.iter !l ~f:(fun pc' -> in_loop := Addr.Map.add pc' pc !in_loop) )
+      then List.iter !l ~f:(fun pc' -> in_loop := Addr.Map.add pc' pc !in_loop))
   in
   Code.fold_closures prog (fun _ _ (pc, _) () -> traverse pc) ();
   !in_loop
@@ -128,19 +128,19 @@ let mark_variables in_loop (pc, blocks, free_pc) =
     then (
       visited.(pc) <- true;
       let block = Addr.Map.find pc blocks in
-      ( try
-          let pc' = Addr.Map.find pc in_loop in
-          iter_block_bound_vars
-            (fun x ->
-              (*
+      (try
+         let pc' = Addr.Map.find pc in_loop in
+         iter_block_bound_vars
+           (fun x ->
+             (*
 Format.eprintf "!%a: %d@." Var.print x pc';
 *)
-              Var.Tbl.set vars x pc' )
-            block
-        with Not_found -> () );
+             Var.Tbl.set vars x pc')
+           block
+       with Not_found -> ());
       List.iter block.body ~f:(fun i ->
-          match i with Let (_, Closure (_, (pc', _))) -> traverse pc' | _ -> () );
-      Code.fold_children blocks pc (fun pc' () -> traverse pc') () )
+          match i with Let (_, Closure (_, (pc', _))) -> traverse pc' | _ -> ());
+      Code.fold_children blocks pc (fun pc' () -> traverse pc') ())
   in
   traverse pc; vars
 
@@ -165,12 +165,12 @@ Format.eprintf "%a: %d@." Var.print x pc';
               try Addr.Map.find pc' !all_freevars with Not_found -> Var.Set.empty
             in
             let s = Var.Set.add x fv in
-            all_freevars := Addr.Map.add pc' s !all_freevars )
+            all_freevars := Addr.Map.add pc' s !all_freevars)
         block;
-      ( try
-          let pc'' = Addr.Map.find pc in_loop in
-          all_freevars := Addr.Map.remove pc'' !all_freevars
-        with Not_found -> () );
+      (try
+         let pc'' = Addr.Map.find pc in_loop in
+         all_freevars := Addr.Map.remove pc'' !all_freevars
+       with Not_found -> ());
       List.iter block.body ~f:(fun i ->
           match i with
           | Let (_, Closure (_, (pc', _))) -> (
@@ -182,9 +182,9 @@ Format.eprintf "%a: %d@." Var.print x pc';
                 in
                 freevars := Addr.Map.add pc' fv !freevars;
                 all_freevars := Addr.Map.remove pc'' !all_freevars
-              with Not_found -> freevars := Addr.Map.add pc' Var.Set.empty !freevars )
-          | _ -> () );
-      Code.fold_children blocks pc (fun pc' () -> traverse pc') () )
+              with Not_found -> freevars := Addr.Map.add pc' Var.Set.empty !freevars)
+          | _ -> ());
+      Code.fold_children blocks pc (fun pc' () -> traverse pc') ())
   in
   traverse pc;
   (*

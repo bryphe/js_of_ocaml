@@ -333,7 +333,7 @@ let rec print_constant f x =
             Format.fprintf f ", ";
             print_constant f a.(i)
           done;
-          Format.fprintf f ")" )
+          Format.fprintf f ")")
   | Int i -> Format.fprintf f "%ld" i
 
 let print_arg f a = match a with Pv x -> Var.print f x | Pc c -> print_constant f c
@@ -360,11 +360,11 @@ let print_prim f p l =
   | Vectlength, [x] -> Format.fprintf f "%a.length" print_arg x
   | Array_get, [x; y] -> Format.fprintf f "%a[%a]" print_arg x print_arg y
   | Extern s, [x; y] -> (
-    try Format.fprintf f "%a %s %a" print_arg x (binop s) print_arg y with Not_found ->
-      Format.fprintf f "\"%s\"(%a)" s (print_list print_arg) l )
+    try Format.fprintf f "%a %s %a" print_arg x (binop s) print_arg y
+    with Not_found -> Format.fprintf f "\"%s\"(%a)" s (print_list print_arg) l)
   | Extern s, [x] -> (
-    try Format.fprintf f "%s %a" (unop s) print_arg x with Not_found ->
-      Format.fprintf f "\"%s\"(%a)" s (print_list print_arg) l )
+    try Format.fprintf f "%s %a" (unop s) print_arg x
+    with Not_found -> Format.fprintf f "\"%s\"(%a)" s (print_list print_arg) l)
   | Extern s, _ -> Format.fprintf f "\"%s\"(%a)" s (print_list print_arg) l
   | Not, [x] -> Format.fprintf f "!%a" print_arg x
   | IsInt, [x] -> Format.fprintf f "is_int(%a)" print_arg x
@@ -430,9 +430,9 @@ let print_last f l =
   | Switch (x, a1, a2) ->
       Format.fprintf f "switch %a {" Var.print x;
       Array.iteri a1 ~f:(fun i cont ->
-          Format.fprintf f "int %d -> %a; " i print_cont cont );
+          Format.fprintf f "int %d -> %a; " i print_cont cont);
       Array.iteri a2 ~f:(fun i cont ->
-          Format.fprintf f "tag %d -> %a; " i print_cont cont );
+          Format.fprintf f "tag %d -> %a; " i print_cont cont);
       Format.fprintf f "}"
   | Pushtrap (cont1, x, cont2, pcs) ->
       Format.fprintf
@@ -453,11 +453,11 @@ type xinstr =
 
 let print_block annot pc block =
   Format.eprintf "==== %d (%a) ====@." pc print_var_list block.params;
-  ( match block.handler with
+  (match block.handler with
   | Some (x, cont) -> Format.eprintf "    handler %a => %a@." Var.print x print_cont cont
-  | None -> () );
+  | None -> ());
   List.iter block.body ~f:(fun i ->
-      Format.eprintf " %s %a@." (annot pc (Instr i)) print_instr i );
+      Format.eprintf " %s %a@." (annot pc (Instr i)) print_instr i);
   Format.eprintf " %s %a@." (annot pc (Last block.branch)) print_last block.branch;
   Format.eprintf "@."
 
@@ -473,7 +473,7 @@ let fold_closures (pc, blocks, _) f accu =
       List.fold_left block.body ~init:accu ~f:(fun accu i ->
           match i with
           | Let (x, Closure (params, cont)) -> f (Some x) params cont accu
-          | _ -> accu ) )
+          | _ -> accu))
     blocks
     (f None [] (pc, []) accu)
 
@@ -523,7 +523,7 @@ let rec traverse' fold f pc visited blocks acc =
         pc
         (fun pc (visited, acc) ->
           let visited, acc = traverse' fold f pc visited blocks acc in
-          visited, acc )
+          visited, acc)
         (visited, acc)
     in
     let acc = f pc acc in
@@ -544,7 +544,7 @@ let eq (pc1, blocks1, _) (pc2, blocks2, _) =
            block1.params = block2.params
            && block1.branch = block2.branch
            && block1.body = block2.body
-         with Not_found -> false )
+         with Not_found -> false)
        blocks1
        true
 
@@ -564,7 +564,7 @@ let invariant (_, blocks, _) =
       if check_defs
       then (
         assert (defs.(Var.idx x) = false);
-        defs.(Var.idx x) <- true )
+        defs.(Var.idx x) <- true)
     in
     let check_expr = function
       | Const _ -> ()
@@ -598,5 +598,5 @@ let invariant (_, blocks, _) =
         List.iter block.params ~f:define;
         Option.iter block.handler ~f:(fun (_, cont) -> check_cont cont);
         List.iter block.body ~f:check_instr;
-        check_last block.branch )
+        check_last block.branch)
       blocks

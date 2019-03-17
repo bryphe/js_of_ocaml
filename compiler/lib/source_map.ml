@@ -43,7 +43,7 @@ let string_of_mapping mapping =
     (fun t1 t2 ->
       match compare t1.gen_line t2.gen_line with
       | 0 -> compare t1.gen_col t2.gen_col
-      | n -> n )
+      | n -> n)
     a;
   let buf = Buffer.create 1024 in
   let gen_line = ref 0 in
@@ -75,34 +75,34 @@ let string_of_mapping mapping =
             Buffer.add_char buf ';'
           done;
           gen_col := 0;
-          gen_line := c.gen_line )
+          gen_line := c.gen_line)
         else if i > 0
         then Buffer.add_char buf ',';
         let l =
           (c.gen_col - !gen_col)
           ::
-          ( if c.ori_source = -1
+          (if c.ori_source = -1
           then []
           else
             (c.ori_source - !ori_source)
             :: (c.ori_line - !ori_line)
             :: (c.ori_col - !ori_col)
             ::
-            ( match c.ori_name with
+            (match c.ori_name with
             | None -> []
             | Some n ->
                 let n' = !ori_name in
                 ori_name := n;
-                [n - n'] ) )
+                [n - n']))
         in
         gen_col := c.gen_col;
         if c.ori_source <> -1
         then (
           ori_source := c.ori_source;
           ori_line := c.ori_line;
-          ori_col := c.ori_col );
+          ori_col := c.ori_col);
         Vlq64.encode_l buf l;
-        loop i (i + 1) )
+        loop i (i + 1))
   in
   loop (-1) 0; Buffer.contents buf
 

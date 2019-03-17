@@ -15,7 +15,7 @@ let find_objs = find ~ext:".objs"
 let ignore_pp =
   List.filter ~f:(fun name ->
       let name = Filename.chop_extension name in
-      not (Filename.check_suffix name ".pp") )
+      not (Filename.check_suffix name ".pp"))
 
 let read_file ~path =
   let ic = open_in path in
@@ -36,7 +36,7 @@ module Dune = struct
   let rec find_map ~f l =
     match l with
     | [] -> None
-    | x :: xs -> ( match f x with None -> find_map ~f xs | Some x -> Some x )
+    | x :: xs -> ( match f x with None -> find_map ~f xs | Some x -> Some x)
 
   let read ~path =
     let sexps = Sexp.load_sexps (Filename.concat path "dune") in
@@ -44,7 +44,7 @@ module Dune = struct
       match
         find_map sexps ~f:(function
             | Sexp.List (Atom "library" :: l) -> Some l
-            | _ -> None )
+            | _ -> None)
       with
       | Some l -> l
       | None -> failwith "no library found"
@@ -53,7 +53,7 @@ module Dune = struct
       match
         find_map lib ~f:(function
             | Sexp.List [Atom "name"; Atom name] -> Some name
-            | _ -> None )
+            | _ -> None)
       with
       | Some name -> name
       | None -> failwith "no name for library"
@@ -62,7 +62,7 @@ module Dune = struct
       match
         find_map lib ~f:(function
             | Sexp.List [Atom "public_name"; Atom name] -> Some name
-            | _ -> None )
+            | _ -> None)
       with
       | Some name -> name
       | None -> failwith "no name for library"
@@ -71,7 +71,7 @@ module Dune = struct
       match
         find_map lib ~f:(function
             | Sexp.List (Atom "libraries" :: l) -> Some l
-            | _ -> None )
+            | _ -> None)
       with
       | Some l ->
           List.map l ~f:(function Sexp.Atom n -> n | _ -> failwith "complex deps")
@@ -83,7 +83,7 @@ module Dune = struct
             | Sexp.List [Atom "wrapped"; Atom b] -> Some (bool_of_string b)
             | Sexp.List [Atom "wrapped"; List [Atom "transition"; _]] -> Some true
             | Sexp.List (Atom "wrapped" :: _) -> failwith "invalid wrapped snippet"
-            | _ -> None )
+            | _ -> None)
       with
       | Some b -> b
       | None -> true
@@ -140,7 +140,7 @@ let _ =
         in
         let objs = find_objs ~path in
         let packages_dir = List.map (dune.public_name :: dune.deps) ~f:find_package in
-        ocamldoc_args ~inc:(packages_dir @ objs) ?opn (mli @ ml) )
+        ocamldoc_args ~inc:(packages_dir @ objs) ?opn (mli @ ml))
   in
   let command = List.flatten (ocamldoc @ args) |> String.concat ~sep:" " in
   print_endline command;

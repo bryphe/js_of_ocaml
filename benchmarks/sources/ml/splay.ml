@@ -89,7 +89,7 @@ let rec splay_ ((left, key, value, right) as a) k =
           | Node n ->
               (* zig-zag *)
               let lrleft, lrk, lrv, lrright = splay_ n k in
-              Node (lleft, lk, lv, lrleft), lrk, lrv, Node (lrright, key, value, right) )
+              Node (lleft, lk, lv, lrleft), lrk, lrv, Node (lrright, key, value, right))
   else
     match right with
     | Empty -> a
@@ -110,7 +110,7 @@ let rec splay_ ((left, key, value, right) as a) k =
           | Node n ->
               (* zag-zig *)
               let rlleft, rlk, rlv, rlright = splay_ n k in
-              Node (left, key, value, rlleft), rlk, rlv, Node (rlright, rk, rv, rright) )
+              Node (left, key, value, rlleft), rlk, rlv, Node (rlright, rk, rv, rright))
 
 let splay t key = match t with Empty -> t | Node n -> Node (splay_ n key)
 
@@ -136,7 +136,7 @@ let remove key t =
   | Node (left, _, _, right) -> (
     match splay left key with
     | Node (lleft, lk, lv, Empty) -> Node (lleft, lk, lv, right)
-    | _ -> failwith "remove" )
+    | _ -> failwith "remove")
 
 let find key t =
   let t = splay t key in
@@ -231,9 +231,9 @@ let splayRun t =
       let key, t = insertNewNode t in
       aux
         (i + 1)
-        ( match findGreatestLessThan key t with
+        (match findGreatestLessThan key t with
         | None, t -> remove key t
-        | Some k, t -> remove k t )
+        | Some k, t -> remove k t)
     else t
   in
   aux 0 t

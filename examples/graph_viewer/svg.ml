@@ -45,11 +45,11 @@ let perform_draw ctx fill stroke =
   (*
   print_extent ctx fill stroke;
 *)
-  ( match fill with
+  (match fill with
   | Some (r, g, b) ->
       Cairo.set_source_rgb ctx r g b;
       if stroke <> None then Cairo.fill_preserve ctx else Cairo.fill ctx
-  | None -> () );
+  | None -> ());
   match stroke with
   | Some (r, g, b) ->
       Cairo.set_source_rgb ctx r g b;
@@ -65,7 +65,7 @@ let draw_element ctx e =
         (fun c ->
           match c with
           | Move_to (x, y) -> Cairo.move_to ctx x y
-          | Curve_to (x1, y1, x2, y2, x3, y3) -> Cairo.curve_to ctx x1 y1 x2 y2 x3 y3 )
+          | Curve_to (x1, y1, x2, y2, x3, y3) -> Cairo.curve_to ctx x1 y1 x2 y2 x3 y3)
         cmd;
       perform_draw ctx fill stroke
   | Ellipse (cx, cy, rx, ry, fill, stroke) ->
@@ -82,7 +82,7 @@ let draw_element ctx e =
         List.iter (fun (x, y) -> Cairo.line_to ctx x y) rem;
         Cairo.close_path ctx;
         perform_draw ctx fill stroke
-    | [] -> () )
+    | [] -> ())
   | Text (x, y, txt, font, font_size, fill, stroke) ->
       let ext = Cairo.text_extents ctx txt in
       Cairo.move_to ctx (x -. ext.Cairo.x_bearing -. (ext.Cairo.text_width /. 2.)) y;
@@ -102,7 +102,7 @@ let compute_extent ctx e =
         (fun c ->
           match c with
           | Move_to (x, y) -> Cairo.move_to ctx x y
-          | Curve_to (x1, y1, x2, y2, x3, y3) -> Cairo.curve_to ctx x1 y1 x2 y2 x3 y3 )
+          | Curve_to (x1, y1, x2, y2, x3, y3) -> Cairo.curve_to ctx x1 y1 x2 y2 x3 y3)
         cmd;
       path_extent ctx fill stroke
   | Ellipse (cx, cy, rx, ry, fill, stroke) ->
@@ -119,13 +119,13 @@ let compute_extent ctx e =
         List.iter (fun (x, y) -> Cairo.line_to ctx x y) rem;
         Cairo.close_path ctx;
         path_extent ctx fill stroke
-    | [] -> assert false )
+    | [] -> assert false)
   | Text (x, y, txt, font, font_size, fill, stroke) ->
       let ext = Cairo.text_extents ctx txt in
-      ( x -. (ext.Cairo.text_width /. 2.)
+      (x -. (ext.Cairo.text_width /. 2.)
       , y +. ext.Cairo.y_bearing
       , x +. (ext.Cairo.text_width /. 2.)
-      , y +. ext.Cairo.y_bearing +. ext.Cairo.text_height )
+      , y +. ext.Cairo.y_bearing +. ext.Cairo.text_height)
 
 let ctx = Cairo.create s
 
@@ -362,7 +362,7 @@ let rec parse_cmds l =
       match cmd, args with
       | "M", [x; y] -> Move_to (x, y) :: rem
       | "C", (_ :: _ as args) -> parse_curve_to args rem
-      | _ -> assert false )
+      | _ -> assert false)
   | [] -> []
   | _ -> assert false
 
@@ -380,9 +380,10 @@ let parse_color c =
     Some (convert c)
   else
     Some
-      ( try Hashtbl.find named_colors c with Not_found ->
-          Format.eprintf "%s@." c;
-          assert false )
+      (try Hashtbl.find named_colors c
+       with Not_found ->
+         Format.eprintf "%s@." c;
+         assert false)
 
 let read_path attrs i =
   let d = List.assoc d_attr attrs in
@@ -431,19 +432,19 @@ let rec read_element nm attrs i =
   skip_whitespace i;
   match Xmlm.input i with
   | `El_end -> ()
-  | `Data d -> ( match Xmlm.input i with `El_end -> () | _ -> assert false )
+  | `Data d -> ( match Xmlm.input i with `El_end -> () | _ -> assert false)
   | `El_start ((_, nm'), attrs') ->
       (*
       Format.eprintf "%s" nm';
 List.iter (fun ((_, nm), _) -> Format.eprintf " %s" nm) attrs';
 Format.eprintf "@.";
 *)
-      ( match nm' with
+      (match nm' with
       | "path" -> ignore (read_path attrs' i)
       | "ellipse" -> ignore (read_ellipse attrs' i)
       | "polygon" -> ignore (read_polygon attrs' i)
       | "text" -> ignore (read_text attrs' i)
-      | _ -> read_element nm' attrs' i );
+      | _ -> read_element nm' attrs' i);
       read_element nm attrs i
   | _ -> assert false
 
@@ -482,10 +483,10 @@ let redraw w range ev =
   let bbox =
     let x = (float (Gdk.Rectangle.x rect) /. scale) -. 364. in
     let y = (float (Gdk.Rectangle.y rect) /. scale) -. 22443. in
-    ( x
+    (x
     , y
     , x +. (float (Gdk.Rectangle.width rect) /. scale)
-    , y +. (float (Gdk.Rectangle.height rect) /. scale) )
+    , y +. (float (Gdk.Rectangle.height rect) /. scale))
   in
   (*
 let (x1, y1, x2, y2) = bbox in

@@ -104,9 +104,9 @@ class map : mapper =
       | Try_statement (b, catch, final) ->
           Try_statement
             ( m#statements b
-            , ( match catch with
+            , (match catch with
               | None -> None
-              | Some (id, b) -> Some (m#ident id, m#statements b) )
+              | Some (id, b) -> Some (m#ident id, m#statements b))
             , match final with None -> None | Some s -> Some (m#statements s) )
 
     method statement_o x =
@@ -246,7 +246,7 @@ class share_constant =
           | Some name ->
               let v = Code.Var.fresh_n name in
               Hashtbl.add all x (V v)
-          | _ -> () )
+          | _ -> ())
         count;
       if Hashtbl.length all = 0
       then p
@@ -331,7 +331,7 @@ class free =
         IdentMap.fold
           (fun v k acc ->
             let n = try IdentMap.find v acc with Not_found -> 0 in
-            IdentMap.add v (k + n) acc )
+            IdentMap.add v (k + n) acc)
           from#state.count
           m#state.count
       in
@@ -401,7 +401,7 @@ class free =
                 | None -> id, None
                 | Some (e, pc) ->
                     let e = m#expression e in
-                    id, Some (e, pc) )
+                    id, Some (e, pc))
           in
           Variable_statement l
       | For_statement (Right l, e2, e3, (s, loc)) ->
@@ -412,7 +412,7 @@ class free =
                 | None -> id, None
                 | Some (e, pc) ->
                     let e = m#expression e in
-                    id, Some (e, pc) )
+                    id, Some (e, pc))
           in
           For_statement
             (Right l, m#expression_o e2, m#expression_o e3, (m#statement s, loc))
@@ -451,7 +451,7 @@ class free =
                   IdentMap.fold
                     (fun v k acc ->
                       let n = try IdentMap.find v acc with Not_found -> 0 in
-                      IdentMap.add v (k + n) acc )
+                      IdentMap.add v (k + n) acc)
                     tbody#state.count
                     m#state.count
                 in
@@ -486,7 +486,7 @@ class rename_variable keeps =
             then ()
             else
               let v = Code.Var.fresh_n name in
-              Hashtbl.add h name v )
+              Hashtbl.add h name v)
           from#state.def_name
       in
       let f = function
@@ -539,7 +539,7 @@ class compact_vardecl =
 
     method private translate l =
       List.filter_map l ~f:(fun (id, eopt) ->
-          match eopt with None -> None | Some (e, _) -> Some (EBin (Eq, EVar id, e)) )
+          match eopt with None -> None | Some (e, _) -> Some (EBin (Eq, EVar id, e)))
 
     method private translate_st l =
       let l = m#translate l in
@@ -609,7 +609,7 @@ class compact_vardecl =
                         may_flush rem vars (Statement (Expression_statement x), N) instr
                 )
             | Statement _ as s -> may_flush rem vars (s, loc) instr
-            | Function_declaration _ as x -> rem, vars, (x, loc) :: instr )
+            | Function_declaration _ as x -> rem, vars, (x, loc) :: instr)
       in
       let instr =
         match vars with
@@ -654,10 +654,10 @@ class compact_vardecl =
                 let l = m#split e in
                 let l =
                   List.fold_left l ~init:acc ~f:(fun acc e ->
-                      (Expression_statement e, N) :: acc )
+                      (Expression_statement e, N) :: acc)
                 in
                 l
-            | _ -> (x, loc) :: acc )
+            | _ -> (x, loc) :: acc)
       in
       List.rev l
   end
@@ -684,12 +684,11 @@ class clean =
                 vars_rev, vars_loc, instr_rev
             | _ when vars_rev = [] -> [], vars_loc, rev_append_st (x, loc) instr_rev
             | _ ->
-                ( []
+                ([]
                 , vars_loc
                 , rev_append_st
                     (x, loc)
-                    ((Variable_statement (List.rev vars_rev), vars_loc) :: instr_rev) )
-        )
+                    ((Variable_statement (List.rev vars_rev), vars_loc) :: instr_rev)))
       in
       let instr_rev =
         match vars_rev with
@@ -733,7 +732,7 @@ class clean =
             | Function_declaration _ as x when st_rev = [] ->
                 [], (m#source x, loc) :: sources_rev
             | Function_declaration _ as x ->
-                [], (m#source x, loc) :: append_st st_rev sources_rev )
+                [], (m#source x, loc) :: append_st st_rev sources_rev)
       in
       let sources_rev =
         match st_rev with [] -> sources_rev | st_rev -> append_st st_rev sources_rev
@@ -767,14 +766,14 @@ let assign_op = function
         if exp' = ENum 1.
         then Some (EUn (IncrB, exp))
         else Some (EBin (PlusEq, exp, exp'))
-    | true, true -> Some (EBin (StarEq, exp, ENum 2.)) )
+    | true, true -> Some (EBin (StarEq, exp, ENum 2.)))
   | exp, EBin (Minus, exp', y) when exp = exp' ->
       if y = ENum 1. then Some (EUn (DecrB, exp)) else Some (EBin (MinusEq, exp, y))
   | exp, EBin (Mul, exp', exp'') -> (
     match exp = exp', exp = exp'' with
     | false, false -> None
     | true, _ -> Some (EBin (StarEq, exp, exp''))
-    | _, true -> Some (EBin (StarEq, exp, exp')) )
+    | _, true -> Some (EBin (StarEq, exp, exp')))
   | exp, EBin (((Div | Mod | Lsl | Asr | Lsr | Band | Bxor | Bor) as unop), exp', y)
     when exp = exp' ->
       Some (EBin (translate_assign_op unop, exp, y))
@@ -793,12 +792,12 @@ class simpl =
         | _, ENum n when n < 0. -> EBin (Minus, e2, ENum (-.n))
         | ENum 0., (ENum _ as x) -> x
         | (ENum _ as x), ENum 0. -> x
-        | _ -> e )
+        | _ -> e)
       | EBin (Minus, e1, e2) -> (
         match e2, e1 with
         | ENum n, _ when n < 0. -> EBin (Plus, e1, ENum (-.n))
         | (ENum _ as x), ENum 0. -> x
-        | _ -> e )
+        | _ -> e)
       | _ -> e
 
     method statement s =
@@ -810,14 +809,14 @@ class simpl =
       List.fold_right s ~init:[] ~f:(fun (st, loc) rem ->
           match st with
           | If_statement
-              ( cond
+              (cond
               , (Return_statement (Some e1), _)
-              , Some (Return_statement (Some e2), _) ) ->
+              , Some (Return_statement (Some e2), _)) ->
               (Return_statement (Some (ECond (cond, e1, e2))), loc) :: rem
           | If_statement
-              ( cond
+              (cond
               , (Expression_statement (EBin (Eq, v1, e1)), _)
-              , Some (Expression_statement (EBin (Eq, v2, e2)), _) )
+              , Some (Expression_statement (EBin (Eq, v2, e2)), _))
             when v1 = v2 ->
               (Expression_statement (EBin (Eq, v1, ECond (cond, e1, e2))), loc) :: rem
           | Variable_statement l1 ->
@@ -827,20 +826,20 @@ class simpl =
                     | ident, Some (exp, pc) -> (
                       match assign_op (EVar ident, exp) with
                       | Some e -> Expression_statement e, loc
-                      | None -> Variable_statement [ident, Some (exp, pc)], loc ) )
+                      | None -> Variable_statement [ident, Some (exp, pc)], loc))
               in
               x @ rem
-          | _ -> (st, loc) :: rem )
+          | _ -> (st, loc) :: rem)
 
     method sources l =
       let append_st st_rev sources_rev =
         let st = m#statements (List.rev st_rev) in
         let st =
           List.map st ~f:(function
-              | ( Variable_statement [(addr, Some (EFun (None, params, body, loc'), loc))]
-                , _ ) ->
+              | (Variable_statement [(addr, Some (EFun (None, params, body, loc'), loc))]
+                , _) ->
                   Function_declaration (addr, params, body, loc'), loc
-              | s, loc -> Statement s, loc )
+              | s, loc -> Statement s, loc)
         in
         List.rev_append st sources_rev
       in
@@ -851,7 +850,7 @@ class simpl =
             | (Function_declaration _ as x), loc when st_rev = [] ->
                 [], (m#source x, loc) :: sources_rev
             | (Function_declaration _ as x), loc ->
-                [], (m#source x, loc) :: append_st st_rev sources_rev )
+                [], (m#source x, loc) :: append_st st_rev sources_rev)
       in
       let sources_rev =
         match st_rev with [] -> sources_rev | st_rev -> append_st st_rev sources_rev

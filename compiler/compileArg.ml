@@ -229,7 +229,8 @@ let options =
             ; file
             ; sourceroot = sourcemap_root
             ; sources = []
-            ; sources_content = (if sourcemap_don't_inline_content then None else Some [])
+            ; sources_content =
+                (if sourcemap_don't_inline_content then None else Some [])
             ; names = []
             ; mappings = [] } )
       else None
@@ -241,7 +242,7 @@ let options =
           "Warning: '--source-map' flag ignored because js_of_ocaml was compiled \
            without sourcemap support (install yojson to enable support)\n\
            %!";
-        None )
+        None)
       else source_map
     in
     let params : (string * string) list = List.flatten set_param in

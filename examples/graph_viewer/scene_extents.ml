@@ -32,7 +32,7 @@ let compute_extent ctx e =
         (fun c ->
           match c with
           | Move_to (x, y) -> Cairo.move_to ctx x y
-          | Curve_to (x1, y1, x2, y2, x3, y3) -> Cairo.curve_to ctx x1 y1 x2 y2 x3 y3 )
+          | Curve_to (x1, y1, x2, y2, x3, y3) -> Cairo.curve_to ctx x1 y1 x2 y2 x3 y3)
         cmd;
       path_extent ctx fill stroke
   | Ellipse (cx, cy, rx, ry, fill, stroke) ->
@@ -52,9 +52,9 @@ let compute_extent ctx e =
       Cairo.select_font_face ctx font Cairo.FONT_SLANT_NORMAL Cairo.FONT_WEIGHT_NORMAL;
       Cairo.set_font_size ctx font_size;
       let ext = Cairo.text_extents ctx txt in
-      ( x -. (ext.Cairo.text_width /. 2.) -. 5.
+      (x -. (ext.Cairo.text_width /. 2.) -. 5.
       , y +. ext.Cairo.y_bearing -. 5.
       , x +. (ext.Cairo.text_width /. 2.) +. 5.
-      , y +. ext.Cairo.y_bearing +. ext.Cairo.text_height +. 5. )
+      , y +. ext.Cairo.y_bearing +. ext.Cairo.text_height +. 5.)
 
 let compute ctx l = Array.map (fun e -> compute_extent ctx e) l

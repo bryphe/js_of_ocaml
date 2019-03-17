@@ -101,7 +101,7 @@ let observe
   in
   let () =
     opt_iter attribute_filter (fun l ->
-        cfg##.attributeFilter := Js.array (Array.of_list l) )
+        cfg##.attributeFilter := Js.array (Array.of_list l))
   in
   let () = obs##observe node cfg in
   obs

@@ -314,7 +314,7 @@ type nuc =
 
 let is_A = function
   | N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -343,13 +343,13 @@ let is_A = function
       , c4
       , c5
       , c6
-      , A (_, _, _, _, _, _, _, _) ) ->
+      , A (_, _, _, _, _, _, _, _)) ->
       true
   | _ -> false
 
 let is_C = function
   | N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -378,13 +378,13 @@ let is_C = function
       , c4
       , c5
       , c6
-      , C (_, _, _, _, _, _) ) ->
+      , C (_, _, _, _, _, _)) ->
       true
   | _ -> false
 
 let is_G = function
   | N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -413,13 +413,13 @@ let is_G = function
       , c4
       , c5
       , c6
-      , G (_, _, _, _, _, _, _, _, _) ) ->
+      , G (_, _, _, _, _, _, _, _, _)) ->
       true
   | _ -> false
 
 let nuc_C1'
     (N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -448,12 +448,12 @@ let nuc_C1'
       , c4
       , c5
       , c6
-      , _ )) =
+      , _)) =
   c1'
 
 let nuc_C2
     (N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -482,12 +482,12 @@ let nuc_C2
       , c4
       , c5
       , c6
-      , _ )) =
+      , _)) =
   c2
 
 let nuc_C3'
     (N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -516,12 +516,12 @@ let nuc_C3'
       , c4
       , c5
       , c6
-      , _ )) =
+      , _)) =
   c3'
 
 let nuc_C4
     (N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -550,12 +550,12 @@ let nuc_C4
       , c4
       , c5
       , c6
-      , _ )) =
+      , _)) =
   c4
 
 let nuc_C4'
     (N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -584,12 +584,12 @@ let nuc_C4'
       , c4
       , c5
       , c6
-      , _ )) =
+      , _)) =
   c4'
 
 let nuc_N1
     (N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -618,12 +618,12 @@ let nuc_N1
       , c4
       , c5
       , c6
-      , _ )) =
+      , _)) =
   n1
 
 let nuc_O3'
     (N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -652,12 +652,12 @@ let nuc_O3'
       , c4
       , c5
       , c6
-      , _ )) =
+      , _)) =
   o3'
 
 let nuc_P
     (N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -686,12 +686,12 @@ let nuc_P
       , c4
       , c5
       , c6
-      , _ )) =
+      , _)) =
   p
 
 let nuc_dgf_base_tfo
     (N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -720,12 +720,12 @@ let nuc_dgf_base_tfo
       , c4
       , c5
       , c6
-      , _ )) =
+      , _)) =
   dgf_base_tfo
 
 let nuc_p_o3'_180_tfo
     (N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -754,12 +754,12 @@ let nuc_p_o3'_180_tfo
       , c4
       , c5
       , c6
-      , _ )) =
+      , _)) =
   p_o3'_180_tfo
 
 let nuc_p_o3'_275_tfo
     (N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -788,12 +788,12 @@ let nuc_p_o3'_275_tfo
       , c4
       , c5
       , c6
-      , _ )) =
+      , _)) =
   p_o3'_275_tfo
 
 let nuc_p_o3'_60_tfo
     (N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -822,12 +822,12 @@ let nuc_p_o3'_60_tfo
       , c4
       , c5
       , c6
-      , _ )) =
+      , _)) =
   p_o3'_60_tfo
 
 let rA_N9 = function
   | N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -856,13 +856,13 @@ let rA_N9 = function
       , c4
       , c5
       , c6
-      , A (n6, n7, n9, c8, h2, h61, h62, h8) ) ->
+      , A (n6, n7, n9, c8, h2, h61, h62, h8)) ->
       n9
   | _ -> assert false
 
 let rG_N9 = function
   | N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -891,7 +891,7 @@ let rG_N9 = function
       , c4
       , c5
       , c6
-      , G (n2, n7, n9, c8, o6, h1, h21, h22, h8) ) ->
+      , G (n2, n7, n9, c8, o6, h1, h21, h22, h8)) ->
       n9
   | _ -> assert false
 
@@ -6647,10 +6647,10 @@ let p_o3' nucls i j partial_inst =
     | [] -> domains
     | n :: ns ->
         generate
-          ( mk_var i (tfo_combine (nuc_p_o3'_60_tfo n) align) n
+          (mk_var i (tfo_combine (nuc_p_o3'_60_tfo n) align) n
           :: mk_var i (tfo_combine (nuc_p_o3'_180_tfo n) align) n
           :: mk_var i (tfo_combine (nuc_p_o3'_275_tfo n) align) n
-          :: domains )
+          :: domains)
           ns
   in
   generate [] nucls
@@ -6679,7 +6679,7 @@ let anticodon_domains =
     p_o3' rCs 32 31
   ; (*   | Constraint    *)
     p_o3' rUs 33 32
-  (* <-' 3.0 Angstroms *)
+    (* <-' 3.0 Angstroms *)
    ]
 
 (* Anticodon constraint *)
@@ -6740,7 +6740,7 @@ let pseudoknot_domains =
     stacked5' rU 5 4
   ; (*   | 4.5 Angstroms *)
     stacked5' rC 6 5
-  (* <-'               *)
+    (* <-'               *)
    ]
 
 (* Pseudoknot constraint *)
@@ -6759,7 +6759,7 @@ let pseudoknot () = search [] pseudoknot_domains pseudoknot_constraint
 
 let list_of_atoms = function
   | N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -6788,7 +6788,7 @@ let list_of_atoms = function
       , c4
       , c5
       , c6
-      , A (n6, n7, n9, c8, h2, h61, h62, h8) ) ->
+      , A (n6, n7, n9, c8, h2, h61, h62, h8)) ->
       [| p
        ; o1p
        ; o2p
@@ -6823,7 +6823,7 @@ let list_of_atoms = function
        ; h62
        ; h8 |]
   | N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -6852,7 +6852,7 @@ let list_of_atoms = function
       , c4
       , c5
       , c6
-      , C (n4, o2, h41, h42, h5, h6) ) ->
+      , C (n4, o2, h41, h42, h5, h6)) ->
       [| p
        ; o1p
        ; o2p
@@ -6885,7 +6885,7 @@ let list_of_atoms = function
        ; h5
        ; h6 |]
   | N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -6914,7 +6914,7 @@ let list_of_atoms = function
       , c4
       , c5
       , c6
-      , G (n2, n7, n9, c8, o6, h1, h21, h22, h8) ) ->
+      , G (n2, n7, n9, c8, o6, h1, h21, h22, h8)) ->
       [| p
        ; o1p
        ; o2p
@@ -6950,7 +6950,7 @@ let list_of_atoms = function
        ; h22
        ; h8 |]
   | N
-      ( dgf_base_tfo
+      (dgf_base_tfo
       , p_o3'_275_tfo
       , p_o3'_180_tfo
       , p_o3'_60_tfo
@@ -6979,7 +6979,7 @@ let list_of_atoms = function
       , c4
       , c5
       , c6
-      , U (o2, o4, h3, h5, h6) ) ->
+      , U (o2, o4, h3, h5, h6)) ->
       [| p
        ; o1p
        ; o2p

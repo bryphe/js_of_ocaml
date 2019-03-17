@@ -51,6 +51,6 @@ let args =
   List.iter
     (fun c ->
       output_string oc (to_unit c);
-      output_string oc "\n" )
+      output_string oc "\n")
     all;
   close_out oc

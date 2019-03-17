@@ -99,11 +99,11 @@ let rec solve m =
                       if solve (m + 1)
                       then (
                         moves.(m) <- {x1 = i; y1 = j; x2 = i2; y2 = j2};
-                        raise Found );
+                        raise Found);
                       board.(i).(j) <- Peg;
                       board.(i1).(j1) <- Peg;
                       board.(i2).(j2) <- Empty
-                  | _ -> () )
+                  | _ -> ())
                 | _ -> ()
               done
           | _ -> ()

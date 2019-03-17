@@ -43,7 +43,7 @@ type form_contents =
 let rec filter_map f = function
   | [] -> []
   | v :: q -> (
-    match f v with None -> filter_map f q | Some v' -> v' :: filter_map f q )
+    match f v with None -> filter_map f q | Some v' -> v' :: filter_map f q)
 
 class type submittableElement =
   object
@@ -115,15 +115,15 @@ let get_input_val ?(get = false) (elt : inputElement t) =
                 | None | Some false -> (
                   match Opt.to_option (list##item 0) with
                   | None -> []
-                  | Some file -> [name, `File file] )
+                  | Some file -> [name, `File file])
                 | Some true ->
                     filter_map
                       (fun f ->
                         match Opt.to_option f with
                         | None -> None
-                        | Some file -> Some (name, `File file) )
-                      (Array.to_list (Array.init list##.length (fun i -> list##item i)))
-              ) )
+                        | Some file -> Some (name, `File file))
+                      (Array.to_list (Array.init list##.length (fun i -> list##item i))))
+        )
     | _ -> [name, `String value]
   else []
 
@@ -142,7 +142,7 @@ let form_elements ?get (form : formElement t) =
              | Select v -> get_select_val v
              | Input v -> get_input_val ?get v
              | Textarea v -> get_textarea_val v
-             | _ -> [] ))
+             | _ -> []))
          elements)
   in
   contents
@@ -153,7 +153,7 @@ let append (form_contents : form_contents) (form_elt : string * form_elt) =
   | `FormData f -> (
     match form_elt with
     | name, `String s -> f##append (string name) s
-    | name, `File file -> f##append_blob (string name) (file :> File.blob t) )
+    | name, `File file -> f##append_blob (string name) (file :> File.blob t))
 
 let empty_form_contents () =
   match Optdef.to_option (Js.def formData) with

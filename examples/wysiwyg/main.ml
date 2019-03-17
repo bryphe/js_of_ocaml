@@ -60,7 +60,7 @@ let rec html2wiki body =
         | "#text" -> (
           match Js.Opt.to_option node##.nodeValue with
           | Some x -> Buffer.add_string ans (Js.to_string x)
-          | None -> () )
+          | None -> ())
         | "P" ->
             let inner = html2wiki node in
             add_str (inner ^ "\n\n")
@@ -85,13 +85,13 @@ let rec html2wiki body =
                     let desc = html2wiki node in
                     Buffer.add_string ans (String.concat "" ["[["; url; "|"; desc; "]]"])
                 | "wiki" -> String.concat "" ["[["; url; "]]"] |> Buffer.add_string ans
-                | _ -> Buffer.add_string ans "^error2_in_anchor^" )
+                | _ -> Buffer.add_string ans "^error2_in_anchor^")
         | ("H1" | "H2" | "H3") as hh ->
             let n = int_of_char hh.[1] - int_of_char '0' + 1 in
             let prefix = String.make n '=' in
             let inner = html2wiki node in
             Buffer.add_string ans (prefix ^ inner ^ "\n\n")
-        | _ as name -> Buffer.add_string ans ("^" ^ name ^ "^") )
+        | _ as name -> Buffer.add_string ans ("^" ^ name ^ "^"))
   done;
   Buffer.contents ans
 
@@ -124,7 +124,7 @@ let onload _ =
           Html.handler (fun _ ->
               iWin##focus;
               iDoc##execCommand (Js.string action) show (wrap value);
-              Js._true );
+              Js._true);
         Dom.appendChild body but;
         but
       in
@@ -157,7 +157,7 @@ let onload _ =
                (Js.string "inserthtml")
                Js._false
                (Js.some (Js.string link));
-             Js._true );
+             Js._true);
       (createButton "link2wiki" "inserthtml")##.onclick
       := Html.handler (fun _ ->
              let link = prompt "Enter a wikipage" "lololo" in
@@ -170,7 +170,7 @@ let onload _ =
                (Js.string "inserthtml")
                Js._false
                (Js.some (Js.string link));
-             Js._true );
+             Js._true);
       Dom.appendChild body (Html.createBr d);
       let preview = Html.createTextarea d in
       preview##.readOnly := Js._true;
@@ -192,16 +192,16 @@ let onload _ =
         let n =
           if text <> old_text
           then (
-            ( try
-                preview##.value := Js.string text;
-                wikiFrame##.value := Js.string (html2wiki (iDoc##.body :> Dom.node Js.t))
-              with _ -> () );
-            20 )
+            (try
+               preview##.value := Js.string text;
+               wikiFrame##.value := Js.string (html2wiki (iDoc##.body :> Dom.node Js.t))
+             with _ -> ());
+            20)
           else max 0 (n - 1)
         in
         Lwt_js.sleep (if n = 0 then 0.5 else 0.1) >>= fun () -> dyn_preview text n
       in
-      ignore (dyn_preview "" 0) );
+      ignore (dyn_preview "" 0));
   Js._false
 
 let _ = Html.window##.onload := Html.handler onload

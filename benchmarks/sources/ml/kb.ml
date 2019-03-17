@@ -35,7 +35,7 @@ and vars_of_list = function [] -> [] | t :: r -> union (vars t) (vars_of_list r)
 
 let rec substitute subst = function
   | Term (oper, sons) -> Term (oper, List.map (substitute subst) sons)
-  | Var n as t -> ( try List.assoc n subst with Not_found -> t )
+  | Var n as t -> ( try List.assoc n subst with Not_found -> t)
 
 (* Term replacement: replace M u N is M[u<-N]. *)
 
@@ -142,7 +142,7 @@ let check_rules rules =
   List.iter
     (fun r ->
       incr counter;
-      if r.number <> !counter then failwith "Rule numbers not in sequence" )
+      if r.number <> !counter then failwith "Rule numbers not in sequence")
     rules;
   !counter
 
@@ -179,21 +179,22 @@ let rec reducible l m =
 let rec mreduce rules m =
   match rules with
   | [] -> failwith "mreduce"
-  | rule :: rest -> ( try reduce rule.lhs m rule.rhs with Failure _ -> mreduce rest m )
+  | rule :: rest -> ( try reduce rule.lhs m rule.rhs with Failure _ -> mreduce rest m)
 
 (* One step of rewriting in leftmost-outermost strategy,
    with multiple rules. Fails if no redex is found *)
 
 let rec mrewrite1 rules m =
-  try mreduce rules m with Failure _ -> (
+  try mreduce rules m
+  with Failure _ -> (
     match m with
     | Var _ -> failwith "mrewrite1"
-    | Term (f, sons) -> Term (f, mrewrite1_sons rules sons) )
+    | Term (f, sons) -> Term (f, mrewrite1_sons rules sons))
 
 and mrewrite1_sons rules = function
   | [] -> failwith "mrewrite1"
   | son :: rest -> (
-    try mrewrite1 rules son :: rest with Failure _ -> son :: mrewrite1_sons rules rest )
+    try mrewrite1 rules son :: rest with Failure _ -> son :: mrewrite1_sons rules rest)
 
 (* Iterating rewrite1. Returns a normal form. May loop forever *)
 
@@ -235,9 +236,10 @@ let diff_eq equiv (x, y) =
   let rec diffrec = function
     | ([], _) as p -> p
     | h :: t, y -> (
-      try diffrec (t, rem_eq equiv h y) with Failure _ ->
+      try diffrec (t, rem_eq equiv h y)
+      with Failure _ ->
         let x', y' = diffrec (t, y) in
-        h :: x', y' )
+        h :: x', y')
   in
   if List.length x > List.length y then diffrec (y, x) else diffrec (x, y)
 
@@ -250,7 +252,7 @@ let mult_ext order = function
     | l1, l2 ->
         if List.for_all (fun n -> List.exists (fun m -> gt_ord order (m, n)) l1) l2
         then Greater
-        else NotGE )
+        else NotGE)
   | _ -> failwith "mult_ext"
 
 (* Lexicographic extension of order *)
@@ -267,8 +269,7 @@ let lex_ext order = function
               if List.for_all (fun n' -> gt_ord order (m, n')) l2 then Greater else NotGE
           | Equal -> lexrec (l1, l2)
           | NotGE ->
-              if List.exists (fun m' -> ge_ord order (m', n)) l1 then Greater else NotGE
-          )
+              if List.exists (fun m' -> ge_ord order (m', n)) l1 then Greater else NotGE)
       in
       lexrec (sons1, sons2)
   | _ -> failwith "lex_ext"
@@ -295,7 +296,7 @@ let rpo op_order ext =
           | NotGE ->
               if List.exists (fun m' -> ge_ord rporec (m', n)) sons1
               then Greater
-              else NotGE ) )
+              else NotGE))
   in
   rporec
 
@@ -327,7 +328,7 @@ let rec super m = function
             @ collate (n + 1) rest
       in
       let insides = collate 1 sons in
-      try ([], unify m n) :: insides with Failure _ -> insides )
+      try ([], unify m n) :: insides with Failure _ -> insides)
   | _ -> []
 
 (* Ex :
@@ -419,7 +420,7 @@ let kb_completion greater =
                 print_string "Non-orientable equations :";
                 print_newline ();
                 List.iter non_orientable failures;
-                failwith "kb_completion" )
+                failwith "kb_completion")
       | (m, n) :: eqs ->
           let m' = mrewrite_all rules m
           and n' = mrewrite_all rules n

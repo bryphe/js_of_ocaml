@@ -52,7 +52,7 @@ let rec enot_rec e =
         | J.Le ->
             (J.EBin (J.Lt, e2, e1), 0)
 *)
-      | _ -> J.EUn (J.Not, e), 1 )
+      | _ -> J.EUn (J.Not, e), 1)
     | J.EUn (J.Not, e) -> e, 0
     | J.EUn ((J.Neg | J.Pl | J.Typeof | J.Void | J.Delete | J.Bnot), _) ->
         J.EUn (J.Not, e), 0
@@ -134,7 +134,7 @@ let rec if_statement_2 e loc iftrue truestop iffalse falsestop =
         then (J.If_statement (e, iftrue, None), loc) :: unblock iffalse
         else if falsestop
         then (J.If_statement (enot e, iffalse, None), loc) :: unblock iftrue
-        else [J.If_statement (e, iftrue, Some iffalse), loc] ) )
+        else [J.If_statement (e, iftrue, Some iffalse), loc]))
 
 let unopt b = match b with Some b -> b | None -> J.Block [], J.N
 

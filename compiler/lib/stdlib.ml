@@ -179,7 +179,7 @@ module String = struct
                 let sub_len = sub_end - !sub_start + 1 in
                 acc := String.sub s !sub_start sub_len :: !acc;
                 sub_start := new_sub_start;
-                i := new_sub_start )
+                i := new_sub_start)
           done;
           List.rev (String.sub s !sub_start (s_max - !sub_start + 1) :: !acc)
 
@@ -189,7 +189,7 @@ module String = struct
     then s
     else (
       Bytes.unsafe_set b 0 (f (Bytes.unsafe_get b 0));
-      Bytes.to_string b )
+      Bytes.to_string b)
 
   let lsplit2 line ~on:delim =
     try
@@ -257,7 +257,7 @@ end = struct
     then (
       let a = Array.make !size 0 in
       Array.blit t.arr 0 a 0 (Array.length t.arr);
-      t.arr <- a );
+      t.arr <- a);
     Array.unsafe_set t.arr idx (Array.unsafe_get t.arr idx lor (1 lsl off))
 
   let unset t i =

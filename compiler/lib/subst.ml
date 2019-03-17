@@ -80,7 +80,7 @@ let rec cont' s pc blocks visited =
       List.fold_left b.body ~init:(blocks, visited) ~f:(fun (blocks, visited) instr ->
           match instr with
           | Let (_, Closure (_, (pc, _))) -> cont' s pc blocks visited
-          | _ -> blocks, visited )
+          | _ -> blocks, visited)
     in
     Code.fold_children
       blocks

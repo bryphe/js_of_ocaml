@@ -97,8 +97,8 @@ let encode_sub pad {emap; _} ?(off = 0) ?len input =
       unsafe_set_be_uint16
         res
         i
-        ( (emap ((b1 lsr 2) land 0x3f) lsl 8)
-        lor emap ((b1 lsl 4) lor (b2 lsr 4) land 0x3f) );
+        ((emap ((b1 lsr 2) land 0x3f) lsl 8)
+        lor emap ((b1 lsl 4) lor (b2 lsr 4) land 0x3f));
       unsafe_set_be_uint16
         res
         (i + 2)
@@ -122,7 +122,7 @@ let encode_sub pad {emap; _} ?(off = 0) ?len input =
           (unsafe_get_uint8 input (off + i + 1))
           (unsafe_get_uint8 input (off + i + 2))
           j;
-        enc (j + 4) (i + 3) )
+        enc (j + 4) (i + 3))
     in
     let rec unsafe_fix = function
       | 0 -> ()
@@ -135,7 +135,7 @@ let encode_sub pad {emap; _} ?(off = 0) ?len input =
     if pad
     then (
       unsafe_fix pad_to_write;
-      Ok (Bytes.unsafe_to_string res, 0, n') )
+      Ok (Bytes.unsafe_to_string res, 0, n'))
     else Ok (Bytes.unsafe_to_string res, 0, n' - pad_to_write)
 
 (* [pad = false], we don't want to write them. *)
@@ -169,11 +169,11 @@ let decode_sub ?(pad = true) {dmap; _} ?(off = 0) ?len input =
       then (
         fun t i ->
         if i >= len then raise Out_of_bounds;
-        get_uint8 t (off + i) )
+        get_uint8 t (off + i))
       else
         fun t i ->
-        try if i < len then get_uint8 t (off + i) else padding with Out_of_bounds ->
-          padding
+        try if i < len then get_uint8 t (off + i) else padding
+        with Out_of_bounds -> padding
     in
     let set_be_uint16 t off v =
       (* can not write 2 bytes. *)

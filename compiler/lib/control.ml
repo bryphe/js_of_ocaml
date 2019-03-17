@@ -40,7 +40,7 @@ let traverse blocks pc f accu =
           (fun ((visited, accu) as p) i ->
             match i with
             | Let (_, Closure (_, (pc, _))) -> traverse_rec visited pc accu
-            | _ -> p )
+            | _ -> p)
           (visited, accu)
           block.body
       in
@@ -114,7 +114,7 @@ Format.eprintf "RRRRRRRRRRRRRRR %d@." (Addr.Set.cardinal (Addr.Map.find 12644 pr
 *)
       then (
         Format.eprintf "UU %d ==> %d@." pc pc';
-        ( preds
+        (preds
         , entries
         , Addr.Map.add
             pc
@@ -127,10 +127,10 @@ Format.eprintf "RRRRRRRRRRRRRRR %d@." (Addr.Set.cardinal (Addr.Map.find 12644 pr
                block'.params
                block'.body
                block'.branch)
-            (Addr.Map.remove pc' blocks) ) )
+            (Addr.Map.remove pc' blocks)))
       else if false (*XXX args = [] && is_trivial block'.body block'.branch *)
       then
-        ( Addr.Map.add pc' (Addr.Set.remove pc (Addr.Map.find pc' preds)) preds
+        (Addr.Map.add pc' (Addr.Set.remove pc (Addr.Map.find pc' preds)) preds
         , entries
         , Addr.Map.add
             pc
@@ -143,7 +143,7 @@ Format.eprintf "RRRRRRRRRRRRRRR %d@." (Addr.Set.cardinal (Addr.Map.find 12644 pr
                block'.params
                block'.body
                block'.branch)
-            blocks )
+            blocks)
       else preds, entries, blocks
   | Cond (c, x, cont1, cont2) -> (
       if cont1 = cont2
@@ -180,7 +180,7 @@ Format.eprintf "RRRRRRRRRRRRRRR %d@." (Addr.Set.cardinal (Addr.Map.find 12644 pr
                 Addr.Map.add pc {block with branch = Cond (c, x, cont1, cont2')} blocks
               in
               block_simpl pc (preds, entries, blocks)
-          | None -> preds, entries, blocks ) )
+          | None -> preds, entries, blocks))
   | Switch (x, a1, a2) ->
       let a1 =
         Array.map
@@ -210,7 +210,7 @@ let simpl (pc, blocks, free_pc) =
             (fun entries i ->
               match i with
               | Let (_, Closure (_, (pc, _))) -> Addr.Set.add pc entries
-              | _ -> entries )
+              | _ -> entries)
             entries
             block.body
         in
@@ -229,7 +229,7 @@ let simpl (pc, blocks, free_pc) =
               in
               preds
         in
-        preds, entries )
+        preds, entries)
       blocks
       (preds, entries)
   in
