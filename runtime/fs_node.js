@@ -19,10 +19,11 @@
 
 //Provides: fs_node_supported
 function fs_node_supported () {
-  return (
-    typeof joo_global_object.process !== 'undefined'
-      && typeof joo_global_object.process.versions !== 'undefined'
-      && typeof joo_global_object.process.versions.node !== 'undefined')
+  return false;
+  // return (
+  //   typeof joo_global_object.process !== 'undefined'
+  //     && typeof joo_global_object.process.versions !== 'undefined'
+  //     && typeof joo_global_object.process.versions.node !== 'undefined')
 }
 
 //Provides: MlNodeDevice

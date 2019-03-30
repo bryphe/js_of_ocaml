@@ -20,9 +20,9 @@
 ///////////// Dummy filesystem
 
 //Provides: caml_current_dir
-if(joo_global_object.process && joo_global_object.process.cwd)
-  var caml_current_dir = joo_global_object.process.cwd().replace(/\\/g,'/');
-else
+// if(joo_global_object.process && joo_global_object.process.cwd)
+//   var caml_current_dir = joo_global_object.process.cwd().replace(/\\/g,'/');
+// else
   var caml_current_dir =  "/static";
 if(caml_current_dir.slice(-1) !== "/") caml_current_dir += "/"
 
@@ -236,6 +236,7 @@ function caml_fs_init (){
 //Provides: caml_create_file
 //Requires: caml_failwith, resolve_fs_device
 function caml_create_file(name,content) {
+  name = name.split("\\").join("/");
   var root = resolve_fs_device(name);
   if(! root.device.register) caml_failwith("cannot register file");
   root.device.register(root.rest,content);
